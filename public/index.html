@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#123c33" />
+  <meta name="description" content="Repositorio práctico de juegos de Educación Física para Primaria." />
+  <title>Juegos EF · Repositorio de Educación Física</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#repositorio" aria-label="Repositorio de Juegos">
+      <span class="brand-mark" aria-hidden="true">EF</span>
+      <span><strong>JUEGOS</strong><small>Educación Física</small></span>
+    </a>
+    <nav aria-label="Navegación principal">
+      <a class="nav-link active" id="repositoryNav" href="#repositorio">1. Repositorio de Juegos</a>
+      <a class="nav-link" id="exerciseNav" href="#ejercicios">2. Creador de Ejercicios</a>
+      <a class="nav-link" id="sessionsNav" href="#sesiones">3. Creador de Sesiones</a>
+      <a class="nav-link" id="builderNav" href="#situaciones">4. Situaciones de Aprendizaje</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="intro" aria-labelledby="pageTitle">
+      <div>
+        <p class="eyebrow">BANCO DE RECURSOS · PRIMARIA</p>
+        <h1 id="pageTitle">Encuentra el juego<br><em>perfecto para hoy.</em></h1>
+      </div>
+      <div class="intro-side">
+        <p>Ideas listas para llevar al patio o al gimnasio, filtradas por lo que de verdad importa en una sesión.</p>
+        <button id="randomBtn" class="random-btn"><span aria-hidden="true">↻</span> Sorpréndeme con un juego</button>
+      </div>
+    </section>
+
+    <section class="search-panel" aria-label="Buscar y filtrar juegos">
+      <label class="search-box">
+        <span aria-hidden="true">⌕</span>
+        <span class="sr-only">Buscar juegos</span>
+        <input id="searchInput" type="search" placeholder="Busca por nombre, habilidad o material…" autocomplete="off" />
+        <kbd>Ctrl K</kbd>
+      </label>
+      <div class="filters">
+        <label><span>TIPO</span><select id="typeFilter"><option value="">Todos los tipos</option><option>Juego motor</option><option>Juego de calentamiento</option><option>Juego cooperativo</option><option>Ritmo y percepción temporal</option><option>Percepción espacial</option><option>Mecanismos de la acción motriz</option><option>Gimnasia natural</option><option>Juego con colchonetas</option><option>Juego con bancos suecos</option><option>Juego con paracaídas</option><option>Tradicional de Castilla y León</option><option>Vuelta a la calma</option><option>Deporte alternativo</option></select></label>
+        <label><span>ETAPA</span><select id="cycleFilter"><option value="">Todos los ciclos</option><option>1.º ciclo</option><option>2.º ciclo</option><option>3.º ciclo</option></select></label>
+        <label><span>OBJETIVO</span><select id="goalFilter"><option value="">Todos los objetivos</option></select></label>
+        <label><span>MATERIAL</span><select id="materialFilter"><option value="">Cualquier material</option><option>Sin material</option><option>Balones</option><option>Aros</option><option>Conos</option><option>Cuerdas</option><option>Colchonetas</option><option>Bancos suecos</option><option>Paracaídas</option><option>Disco volador</option><option>Sticks</option><option>Material específico</option></select></label>
+        <label><span>INTENSIDAD</span><select id="intensityFilter"><option value="">Cualquier intensidad</option><option>Baja</option><option>Media</option><option>Alta</option></select></label>
+        <button id="clearBtn" class="clear-btn" hidden>Limpiar filtros</button>
+      </div>
+    </section>
+
+    <section class="results-head">
+      <div><span id="resultCount">0 juegos</span><span class="dot">·</span><span id="viewLabel">Todos los recursos</span> <button class="repository-subnav active" data-view="all">Todos</button><button class="repository-subnav" data-view="favorites">Favoritos <span id="favCount" class="count">0</span></button></div>
+      <label class="sort">Ordenar <select id="sortSelect"><option value="featured">Recomendados</option><option value="name">Nombre A–Z</option><option value="duration">Menor duración</option></select></label>
+    </section>
+
+    <section id="gameGrid" class="game-grid" aria-live="polite"></section>
+    <section id="emptyState" class="empty-state" hidden>
+      <span>○</span><h2>No encontramos juegos</h2><p>Prueba a quitar algún filtro o buscar con otra palabra.</p><button id="emptyClear">Ver todos los juegos</button>
+    </section>
+
+    <section id="builderSurface" class="builder" hidden>
+      <div class="builder-head">
+        <div><p class="eyebrow">PLANIFICACIÓN DOCENTE · LOMLOE</p><h1 id="builderPageTitle">Creador de Situaciones de Aprendizaje</h1><p id="builderPageIntro">Diseña la situación, organiza sus sesiones y prepara la evaluación.</p></div>
+        <div class="builder-actions">
+          <span class="save-state" id="saveState">✓ Autoguardado en este navegador</span>
+          <div><button id="savePlanFile" class="builder-action primary">Guardar en el ordenador</button><button id="openPlanFile" class="builder-action">Abrir copia</button><button id="sportsMode" class="builder-action sports-mode-button">▣ Modo polideportivo</button><button id="printPlan" class="builder-action">Generar PDF</button></div>
+          <input id="planFileInput" type="file" accept="application/json,.json" hidden />
+        </div>
+      </div>
+      <div class="learning-card">
+        <label><span>Situación de Aprendizaje</span><input id="sdaTitle" placeholder="Ej. Nos movemos y cooperamos" /></label>
+        <label><span>Curso</span><select id="sdaCourse"><option>1.º Primaria</option><option>2.º Primaria</option><option>3.º Primaria</option><option>4.º Primaria</option><option>5.º Primaria</option><option>6.º Primaria</option></select></label>
+        <label><span>N.º de sesiones</span><strong id="sessionCount">1</strong></label>
+      </div>
+      <nav class="sda-tabs" id="sdaTabs" aria-label="Apartados de la Situación de Aprendizaje">
+        <button class="active" data-sda-tab="data">1. Datos</button><button data-sda-tab="curriculum">2. Currículo</button><button data-sda-tab="methodology">3. Metodología</button><button data-sda-tab="sessions">4. Sesiones</button><button data-sda-tab="evaluation">5. Evaluación</button>
+      </nav>
+      <section class="sda-panel" data-sda-panel="data">
+        <div class="sda-form-grid">
+          <label><span>Temporalización</span><input data-sda-field="timing" placeholder="Ej. 3 semanas, segundo trimestre" /></label>
+          <label><span>Producto final</span><input data-sda-field="finalProduct" placeholder="Ej. Jornada de juegos tradicionales" /></label>
+          <label class="wide"><span>Reto o pregunta guía</span><textarea data-sda-field="challenge" rows="2" placeholder="¿Seremos capaces de…?"></textarea></label>
+          <label class="wide"><span>Justificación y contexto</span><textarea data-sda-field="justification" rows="5" placeholder="Necesidad, contexto del grupo y conexión con su realidad"></textarea></label>
+        </div>
+      </section>
+      <section class="sda-panel" data-sda-panel="curriculum" hidden>
+        <div class="curriculum-note"><strong>Educación Física · Decreto 38/2022 de Castilla y León</strong><span>Selecciona los ejes y bloques que se trabajan. Después concreta los criterios correspondientes al curso.</span></div>
+        <h2>Competencias específicas</h2>
+        <div class="choice-grid" id="competenceChoices">
+          <label><input type="checkbox" value="CE1"><span><b>CE1.</b> Vida activa y saludable</span></label><label><input type="checkbox" value="CE2"><span><b>CE2.</b> Adaptación y resolución de situaciones motrices</span></label><label><input type="checkbox" value="CE3"><span><b>CE3.</b> Autorregulación e interacción social</span></label><label><input type="checkbox" value="CE4"><span><b>CE4.</b> Manifestaciones de la cultura motriz</span></label><label><input type="checkbox" value="CE5"><span><b>CE5.</b> Interacción sostenible con el entorno</span></label><label><input type="checkbox" value="CE6"><span><b>CE6.</b> Información y tecnología aplicada a la actividad física</span></label>
+        </div>
+        <h2>Bloques de contenidos</h2>
+        <div class="choice-grid compact" id="contentChoices">
+          <label><input type="checkbox" value="A"><span><b>A.</b> Vida activa y saludable</span></label><label><input type="checkbox" value="B"><span><b>B.</b> Organización y gestión</span></label><label><input type="checkbox" value="C"><span><b>C.</b> Resolución de problemas motrices</span></label><label><input type="checkbox" value="D"><span><b>D.</b> Autorregulación e interacción social</span></label><label><input type="checkbox" value="E"><span><b>E.</b> Manifestaciones de la cultura motriz</span></label><label><input type="checkbox" value="F"><span><b>F.</b> Interacción con el entorno</span></label><label><input type="checkbox" value="G"><span><b>G.</b> Información, digitalización y comunicación</span></label>
+        </div>
+        <div class="sda-form-grid single"><label><span>Criterios de evaluación seleccionados</span><textarea data-sda-field="criteria" rows="8" placeholder="Copia o redacta aquí los criterios del curso, uno por línea"></textarea></label><label><span>Contenidos concretos</span><textarea data-sda-field="contents" rows="8" placeholder="Concreta los contenidos que se movilizan en esta situación"></textarea></label></div>
+      </section>
+      <section class="sda-panel" data-sda-panel="methodology" hidden>
+        <div class="sda-form-grid">
+          <label><span>Metodología principal</span><select data-sda-field="methodology"><option>Aprendizaje basado en retos</option><option>Aprendizaje cooperativo</option><option>Modelo comprensivo</option><option>Educación deportiva</option><option>Gamificación</option><option>Descubrimiento guiado</option><option>Combinación de metodologías</option></select></label>
+          <label><span>Agrupamientos</span><input data-sda-field="groupings" placeholder="Individual, parejas, equipos…" /></label>
+          <label class="wide"><span>Principios metodológicos y organización</span><textarea data-sda-field="methodologicalPrinciples" rows="5" placeholder="Papel docente, autonomía, organización de espacios y tiempos"></textarea></label>
+          <label class="wide"><span>Atención a la diversidad y DUA</span><textarea data-sda-field="inclusion" rows="5" placeholder="Formas de implicación, representación, acción y apoyos previstos"></textarea></label>
+          <label class="wide"><span>Recursos y materiales generales</span><textarea data-sda-field="resources" rows="3"></textarea></label>
+        </div>
+      </section>
+      <section class="sda-panel" data-sda-panel="sessions" hidden>
+      <div class="session-tabs"><div id="sessionTabs"></div><button id="addSession">＋ Nueva sesión</button></div>
+      <div class="builder-layout">
+        <aside class="game-palette">
+          <h2>Biblioteca</h2><p>Arrastra un recurso a la sesión.</p>
+          <input id="builderSearch" type="search" placeholder="Buscar juego…" />
+          <div class="palette-filters">
+            <select id="builderType" aria-label="Filtrar por tipo"><option value="">Todos los tipos</option><option>Juego motor</option><option>Juego de calentamiento</option><option>Juego cooperativo</option><option>Ritmo y percepción temporal</option><option>Percepción espacial</option><option>Mecanismos de la acción motriz</option><option>Gimnasia natural</option><option>Juego con colchonetas</option><option>Juego con bancos suecos</option><option>Juego con paracaídas</option><option>Tradicional de Castilla y León</option><option>Vuelta a la calma</option><option>Deporte alternativo</option><option>Ejercicio propio</option></select>
+            <select id="builderCycle" aria-label="Filtrar por ciclo"><option value="">Todos los ciclos</option><option>1.º ciclo</option><option>2.º ciclo</option><option>3.º ciclo</option><option>Todos los ciclos</option></select>
+            <select id="builderMaterial" aria-label="Filtrar por material"><option value="">Cualquier material</option><option>Sin material</option><option>Balones</option><option>Aros</option><option>Conos</option><option>Cuerdas</option><option>Colchonetas</option><option>Bancos suecos</option><option>Paracaídas</option><option>Disco volador</option><option>Sticks</option><option>Material específico</option><option>Otro</option></select>
+            <select id="builderGroup" aria-label="Filtrar por agrupamiento"><option value="">Cualquier agrupamiento</option><option>Individual</option><option>Parejas</option><option>Tríos</option><option>Pequeños grupos</option><option>Gran grupo</option><option>2 equipos</option></select>
+          </div>
+          <div id="builderGames"></div>
+        </aside>
+        <div class="session-canvas">
+          <div class="session-title-row"><label><span>Título de la sesión</span><input id="sessionTitle" /></label><label><span>Duración</span><strong id="totalTime">0 min</strong></label></div>
+          <div class="session-details">
+            <label><span>Lugar de realización</span><select id="sessionLocation"><option>Polideportivo</option><option>Patio</option><option>Gimnasio</option><option>Parque</option><option>Actividad en la naturaleza</option><option>Bosque y colina del centro</option><option value="Otro">Otro espacio…</option></select></label>
+            <label id="customLocationWrap" hidden><span>Especifica el espacio</span><input id="customLocation" placeholder="Escribe el lugar" /></label>
+            <label class="wide"><span>Objetivo de la sesión</span><textarea id="sessionObjective" rows="3" placeholder="¿Qué queremos conseguir en esta sesión?"></textarea></label>
+            <label class="wide"><span>Material</span><textarea id="sessionMaterial" rows="2" placeholder="Material necesario para la sesión"></textarea><button id="calculateMaterial" type="button" class="text-action">Completar desde los juegos añadidos</button></label>
+          </div>
+          <div id="sessionZones"></div>
+        </div>
+      </div>
+      </section>
+      <section class="sda-panel" data-sda-panel="evaluation" hidden>
+        <h2>Instrumentos de evaluación</h2>
+        <div class="choice-grid compact" id="instrumentChoices"><label><input type="checkbox" value="Observación sistemática"><span>Observación sistemática</span></label><label><input type="checkbox" value="Lista de cotejo"><span>Lista de cotejo</span></label><label><input type="checkbox" value="Rúbrica"><span>Rúbrica</span></label><label><input type="checkbox" value="Escala de valoración"><span>Escala de valoración</span></label><label><input type="checkbox" value="Autoevaluación"><span>Autoevaluación</span></label><label><input type="checkbox" value="Coevaluación"><span>Coevaluación</span></label></div>
+        <div class="sda-form-grid">
+          <label class="wide"><span>Indicadores de logro</span><textarea data-sda-field="indicators" rows="7" placeholder="Conductas observables vinculadas a los criterios"></textarea></label>
+          <label><span>Escala</span><select data-sda-field="assessmentScale"><option>4 niveles: inicial, en proceso, adecuado y excelente</option><option>Escala numérica de 1 a 10</option><option>Sí / A veces / Todavía no</option></select></label>
+          <label><span>Agentes</span><select data-sda-field="assessmentAgents"><option>Heteroevaluación, autoevaluación y coevaluación</option><option>Heteroevaluación docente</option><option>Heteroevaluación y autoevaluación</option></select></label>
+          <label class="wide"><span>Procedimiento de evaluación y calificación</span><textarea data-sda-field="assessmentProcedure" rows="5"></textarea></label>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <dialog id="gameDialog" aria-labelledby="dialogTitle">
+    <button class="dialog-close" aria-label="Cerrar">×</button>
+    <div id="dialogContent"></div>
+  </dialog>
+
+  <dialog id="exerciseDialog" class="exercise-dialog" aria-labelledby="exerciseDialogTitle">
+    <button class="dialog-close" id="exerciseClose" aria-label="Cerrar">×</button>
+    <form id="exerciseForm">
+      <div class="exercise-heading"><p class="eyebrow">BIBLIOTECA DE EDUCACIÓN FÍSICA</p><h2 id="exerciseDialogTitle">Crear mi propio ejercicio</h2><p id="exerciseDialogIntro">La ficha quedará guardada en este dispositivo y podrá utilizarse en las sesiones.</p></div>
+      <div class="exercise-form-grid">
+        <label class="wide"><span>Título</span><input name="title" required /></label>
+        <label><span>Clasificación</span><select name="type"><option>Ejercicio propio</option><option>Juego motor</option><option>Juego de calentamiento</option><option>Juego cooperativo</option><option>Ritmo y percepción temporal</option><option>Percepción espacial</option><option>Mecanismos de la acción motriz</option><option>Gimnasia natural</option><option>Juego con colchonetas</option><option>Juego con bancos suecos</option><option>Juego con paracaídas</option><option>Tradicional de Castilla y León</option><option>Vuelta a la calma</option><option>Deporte alternativo</option></select></label>
+        <label><span>Ciclo</span><select name="cycle"><option>1.º ciclo</option><option>2.º ciclo</option><option>3.º ciclo</option><option>Todos los ciclos</option></select></label>
+        <label><span>Objetivos o habilidades</span><input name="goals" placeholder="Pases, cooperación, equilibrio…" required /></label>
+        <label><span>Material</span><select name="material"><option>Sin material</option><option>Balones</option><option>Aros</option><option>Conos</option><option>Cuerdas</option><option>Colchonetas</option><option>Bancos suecos</option><option>Paracaídas</option><option>Disco volador</option><option>Sticks</option><option>Material específico</option><option>Otro</option></select></label>
+        <label><span>Intensidad</span><select name="intensity"><option>Baja</option><option selected>Media</option><option>Alta</option></select></label>
+        <label><span>Duración aproximada</span><input name="duration" type="number" min="1" max="90" value="10" required /></label>
+        <label><span>Agrupamiento</span><select name="group"><option>Individual</option><option>Parejas</option><option>Tríos</option><option>Pequeños grupos</option><option>Gran grupo</option><option>2 equipos</option></select></label>
+        <div class="exercise-image-field wide">
+          <div class="exercise-image-copy"><span>Imagen del ejercicio</span><p>Escribe primero la descripción. Puedes crear un esquema automáticamente o subir tu propia imagen.</p></div>
+          <div class="exercise-image-tools">
+            <button type="button" id="generateExerciseImage" class="builder-action image-generator">✦ Crear dibujo desde la descripción</button>
+            <label class="upload-image"><span>O subir imagen</span><input name="image" type="file" accept="image/*" /></label>
+          </div>
+          <div id="exerciseImagePreview" class="exercise-image-preview" hidden><img alt="Vista previa del dibujo del ejercicio"><div><strong>Dibujo preparado</strong><span>Puedes volver a generarlo si cambias la descripción.</span></div></div>
+        </div>
+        <label class="wide"><span>Descripción</span><textarea name="summary" rows="3" required></textarea></label>
+        <label class="wide"><span>Preparación y organización</span><textarea name="setup" rows="3"></textarea></label>
+        <label class="wide"><span>Desarrollo o reglas — una por línea</span><textarea name="rules" rows="5" required></textarea></label>
+        <label class="wide"><span>Variantes</span><textarea name="variant" rows="3"></textarea></label>
+        <label class="wide"><span>Observaciones</span><textarea name="observation" rows="3"></textarea></label>
+        <label class="wide"><span>Seguridad</span><textarea name="safety" rows="3"></textarea></label>
+      </div>
+      <div class="chatgpt-exercise-export"><div><strong>¿Quieres una ilustración en estilo cómic?</strong><span>Descarga la ficha y adjúntala en nuestra conversación. Crearé la imagen y añadiré el ejercicio completo al repositorio.</span></div><button type="button" id="exportExerciseForChatGPT" class="builder-action">Descargar ficha para ChatGPT</button></div>
+      <div class="exercise-actions"><span id="exerciseStatus"></span><button type="button" id="exerciseCancel" class="builder-action">Cancelar</button><button type="submit" id="exerciseSubmit" class="builder-action primary">Guardar ejercicio</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="sportsDialog" class="sports-dialog" aria-labelledby="sportsGameTitle">
+    <div class="sports-shell">
+      <header class="sports-header">
+        <label><span>Sesión</span><select id="sportsSessionSelect" aria-label="Elegir sesión"></select></label>
+        <div class="sports-progress-wrap"><span id="sportsSessionTitle"></span><strong id="sportsProgress"></strong></div>
+        <button id="sportsClose" class="sports-close" type="button" aria-label="Cerrar modo polideportivo">×</button>
+      </header>
+      <div id="sportsContent" class="sports-content" aria-live="polite"></div>
+      <nav class="sports-controls" aria-label="Navegación entre ejercicios">
+        <button id="sportsPrev" type="button">← Anterior</button>
+        <button id="sportsNext" type="button">Siguiente →</button>
+      </nav>
+    </div>
+  </dialog>
+
+  <section id="printReport" aria-hidden="true"></section>
+
+  <footer><span>Repositorio de Juegos EF</span><span>Creado para preparar sesiones con menos tiempo y más ideas.</span></footer>
+  <style>
+    .palette-filters{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:14px}.palette-filters select{min-width:0;width:100%;height:38px;border:1px solid #ccd2ce;border-radius:7px;background:#fff;color:var(--ink);padding:0 7px}.exercise-dialog{width:min(860px,94vw);max-height:92vh;padding:0;border:0;border-radius:16px;box-shadow:0 25px 70px #0d241e55}.exercise-dialog form{padding:28px}.exercise-heading{padding-right:40px;margin-bottom:20px}.exercise-heading h2{font:800 30px Manrope;margin:4px 0}.exercise-heading p:last-child{color:var(--muted)}.exercise-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.exercise-form-grid label{display:flex;flex-direction:column;gap:6px}.exercise-form-grid label.wide,.exercise-image-field.wide{grid-column:1/-1}.exercise-form-grid span,.exercise-image-copy>span{font-size:12px;text-transform:uppercase;letter-spacing:.08em;font-weight:800;color:var(--green)}.exercise-form-grid input,.exercise-form-grid select,.exercise-form-grid textarea{box-sizing:border-box;width:100%;border:1px solid #ccd4cf;border-radius:8px;background:#fbfcfa;color:var(--ink);padding:10px;font:inherit}.exercise-form-grid input,.exercise-form-grid select{height:43px}.exercise-image-field{border:1px solid #cbd8d0;border-radius:12px;padding:15px;background:#f4f8f1}.exercise-image-copy p{margin:5px 0 13px;color:var(--muted);font-size:14px}.exercise-image-tools{display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap}.image-generator{background:var(--green)!important;color:#fff!important;border-color:var(--green)!important}.upload-image{flex:1;min-width:210px}.exercise-image-preview{display:grid;grid-template-columns:150px 1fr;gap:13px;align-items:center;margin-top:14px;padding:9px;background:#fff;border:1px solid #d9e2dc;border-radius:10px}.exercise-image-preview img{width:150px;height:100px;object-fit:cover;border-radius:7px}.exercise-image-preview div{display:flex;flex-direction:column;gap:4px}.exercise-image-preview strong{color:var(--green)}.exercise-image-preview span{font-size:13px;text-transform:none;letter-spacing:0;color:var(--muted);font-weight:500}.chatgpt-exercise-export{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-top:18px;padding:14px 16px;border-radius:11px;background:#e8f0ff;border:1px solid #b9cdf1}.chatgpt-exercise-export div{display:flex;flex-direction:column;gap:4px}.chatgpt-exercise-export strong{color:#174f94}.chatgpt-exercise-export span{font-size:14px;line-height:1.4;color:#49627d}.chatgpt-exercise-export button{flex:none;border-color:#2d69ae;color:#174f94;background:#fff}.exercise-actions{display:flex;justify-content:flex-end;align-items:center;gap:9px;margin-top:20px}.exercise-actions span{margin-right:auto;color:var(--green);font-weight:700;font-size:13px}@media(max-width:620px){.exercise-form-grid,.palette-filters{grid-template-columns:1fr}.exercise-form-grid label.wide,.exercise-image-field.wide{grid-column:auto}.exercise-image-preview{grid-template-columns:1fr}.exercise-image-preview img{width:100%;height:auto}.chatgpt-exercise-export{align-items:stretch;flex-direction:column}.chatgpt-exercise-export button{width:100%}}
+    .sda-tabs{display:flex;gap:8px;overflow:auto;margin:22px 0}.sda-tabs button{white-space:nowrap;border:1px solid #ccd4cf;background:#fff;color:var(--green);padding:11px 16px;border-radius:9px;font-weight:800;cursor:pointer}.sda-tabs button.active{background:var(--lime);border-color:#b8d75f}.sda-panel{background:#fff;border:1px solid #e0e2de;border-radius:15px;padding:22px}.sda-panel[data-sda-panel="sessions"]{background:transparent;border:0;padding:0}.sda-panel h2{font:800 21px Manrope;color:var(--green);margin:8px 0 14px}.sda-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:17px}.sda-form-grid.single{grid-template-columns:1fr;margin-top:20px}.sda-form-grid label{display:flex;flex-direction:column;gap:7px}.sda-form-grid label.wide{grid-column:1/-1}.sda-form-grid label>span{font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:800;color:var(--green)}.sda-form-grid input,.sda-form-grid select,.sda-form-grid textarea{width:100%;box-sizing:border-box;border:1px solid #ccd4cf;border-radius:8px;padding:10px 12px;background:#fbfcfa;font:inherit;color:var(--ink)}.sda-form-grid input,.sda-form-grid select{height:44px}.choice-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:24px}.choice-grid.compact{grid-template-columns:repeat(3,1fr)}.choice-grid label{display:flex;gap:10px;align-items:flex-start;border:1px solid #dce1dd;border-radius:9px;padding:12px;background:#fbfcfa;cursor:pointer}.choice-grid input{accent-color:var(--green);margin-top:3px}.choice-grid span{font-size:14px;line-height:1.35}.curriculum-note{display:flex;justify-content:space-between;gap:20px;background:#edf5da;border-left:5px solid var(--lime);padding:14px 16px;margin-bottom:20px}.curriculum-note span{color:var(--muted);font-size:14px}@media(max-width:700px){.sda-form-grid,.choice-grid,.choice-grid.compact{grid-template-columns:1fr}.sda-form-grid label.wide{grid-column:auto}.curriculum-note{display:block}.curriculum-note span{display:block;margin-top:5px}}
+    .session-item{position:relative;display:grid;grid-template-columns:minmax(0,30fr) minmax(0,45fr) minmax(0,25fr);gap:14px;align-items:stretch;padding:10px}.session-item.no-extras{grid-template-columns:minmax(0,30fr) minmax(0,70fr)}.session-item>img{width:100%;height:100%;min-height:150px;object-fit:cover;border-radius:8px}.session-item-main{display:flex;flex-direction:column;gap:7px;padding:3px 0}.session-item-main strong{font:800 17px/1.2 Manrope}.session-item-main p{margin:0;color:var(--muted);font-size:14px;line-height:1.4}.session-item-meta{display:flex;gap:9px;align-items:center;margin-top:auto;color:var(--muted);font-size:12px}.session-item-meta input{width:58px;height:31px}.session-item-extra{border-left:1px solid #e0e4e0;padding-left:12px;display:flex;flex-direction:column;gap:8px}.session-item-extra label{display:flex;flex-direction:column;gap:4px}.session-item-extra span{font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--green)}.session-item-extra textarea{width:100%;min-height:54px;box-sizing:border-box;border:1px solid #d5dad5;border-radius:6px;padding:7px;font:12px/1.3 inherit;resize:vertical}.session-item .remove-session-game{position:absolute;right:7px;top:7px;width:29px;height:29px}.add-notes{border:0!important;background:none!important;color:var(--green)!important;font-weight:700;padding:0!important;width:auto!important;height:auto!important;cursor:pointer;text-align:left}
+    @media(max-width:560px){.session-item,.session-item.no-extras{grid-template-columns:1fr}.session-item>img{width:100%;height:180px;min-height:0}.session-item-extra{border-left:0;border-top:1px solid #e0e4e0;padding:10px 0 0}}
+    .session-zone .zone-head{margin:-15px -15px 14px;padding:12px 15px;border-radius:10px 10px 0 0}.session-zone .zone-head h3{color:#fff;font-size:20px}.session-zone .zone-head span{color:#fff;font-weight:800;background:rgba(0,0,0,.14);padding:5px 9px;border-radius:999px}.session-zone[data-zone="warmup"]{border-color:#e7a23d}.session-zone[data-zone="warmup"] .zone-head{background:#e38b2c}.session-zone[data-zone="main"]{border-color:#3985ca}.session-zone[data-zone="main"] .zone-head{background:#236fb4}.session-zone[data-zone="cooldown"]{border-color:#54a47c}.session-zone[data-zone="cooldown"] .zone-head{background:#34845d}
+    @media print{#printReport .print-game{grid-template-columns:30fr 45fr 25fr}#printReport .print-game.no-extras{grid-template-columns:30fr 70fr}#printReport .print-game img{width:100%;height:32mm}#printReport .print-extra{border-left:1px solid #d5dad5;padding-left:3mm}#printReport .print-session h3{color:#fff;border:0;padding:2mm 3mm;border-radius:1.5mm}#printReport .print-session h3:nth-of-type(1){background:#e38b2c}#printReport .print-session h3:nth-of-type(2){background:#236fb4}#printReport .print-session h3:nth-of-type(3){background:#34845d}}
+    #customLocationWrap[hidden]{display:none!important}body.page-exercises main{display:none}body.page-exercises #exerciseDialog{display:block;position:relative;inset:auto;margin:34px auto;max-height:none;width:min(900px,94vw)}body.page-exercises #exerciseDialog::backdrop{display:none}body.page-exercises #exerciseClose{display:none}body.page-sessions .sda-tabs{display:none}body.page-sessions .sda-panel{display:none!important}body.page-sessions .sda-panel[data-sda-panel="sessions"]{display:block!important}body.page-sessions .learning-card{margin-bottom:22px}.topbar nav .nav-link{display:inline-flex;align-items:center;text-decoration:none}.topbar nav .nav-link.active{color:var(--green)}.repository-subnav{border:0;background:transparent;color:var(--muted);font:700 13px DM Sans;margin-left:10px;cursor:pointer}.repository-subnav.active{color:var(--green);text-decoration:underline;text-underline-offset:4px}.card-actions{display:flex;gap:8px;align-items:center}.card-actions .details-btn{flex:1}.edit-game-btn{border:1px solid #cbd3ce;background:#fff;color:var(--green);border-radius:8px;padding:9px 12px;font-weight:700;cursor:pointer}.dialog-edit-row{display:flex;justify-content:flex-end;margin-top:18px}@media(max-width:850px){.topbar{align-items:flex-start}.topbar nav{overflow-x:auto;max-width:100%;padding-bottom:4px}.topbar nav .nav-link{white-space:nowrap}}
+    .sports-mode-button{background:#e8f6a9;border-color:#b4d34f}.sports-dialog{width:min(620px,100vw);height:min(920px,100dvh);max-width:none;max-height:none;margin:auto;padding:0;border:0;background:#f4f6f2;overflow:hidden}.sports-shell{height:100%;display:flex;flex-direction:column}.sports-header{display:grid;grid-template-columns:minmax(125px,1fr) minmax(120px,1fr) 44px;gap:12px;align-items:center;padding:12px 14px;background:var(--green);color:#fff}.sports-header label{display:flex;flex-direction:column;gap:4px}.sports-header label span{font-size:10px;text-transform:uppercase;letter-spacing:.11em;color:#bdd0ca;font-weight:800}.sports-header select{width:100%;height:38px;border:1px solid #ffffff45;border-radius:8px;background:#224e44;color:#fff;padding:0 8px}.sports-progress-wrap{display:flex;min-width:0;flex-direction:column;gap:3px;text-align:right}.sports-progress-wrap span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#cad9d4;font-size:12px}.sports-progress-wrap strong{font:800 15px Manrope}.sports-close{width:42px;height:42px;border:0;border-radius:50%;background:#ffffff18;color:#fff;font-size:28px;cursor:pointer}.sports-content{flex:1;overflow:auto;overscroll-behavior:contain;background:#fff}.sports-game-image{display:block;width:100%;height:min(42dvh,390px);object-fit:cover;background:#dfe6e1}.sports-game-body{padding:20px 22px 34px}.sports-game-topline{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.sports-part{display:inline-flex;padding:6px 10px;border-radius:999px;color:#fff;font-size:12px;font-weight:800}.sports-part.warmup{background:#e38b2c}.sports-part.main{background:#236fb4}.sports-part.cooldown{background:#34845d}.sports-minutes{font-weight:800;color:var(--green)}.sports-game-body h2{font:800 clamp(28px,7vw,42px)/1.05 Manrope;margin:0 0 12px;letter-spacing:-.035em}.sports-summary{font-size:17px;line-height:1.55;color:#53605b;margin:0 0 22px}.sports-game-body h3{font:800 18px Manrope;color:var(--green);margin:22px 0 8px}.sports-game-body p,.sports-game-body li{font-size:16px;line-height:1.55;color:#39443f}.sports-game-body ol{padding-left:24px}.sports-game-body li+li{margin-top:8px}.sports-note{padding:12px 14px;border-left:4px solid var(--lime);background:#f1f6df;border-radius:5px}.sports-empty{min-height:65dvh;display:grid;place-items:center;text-align:center;padding:35px}.sports-empty div{max-width:390px}.sports-empty span{font-size:48px}.sports-empty h2{font:800 28px Manrope;margin:10px 0}.sports-empty p{color:var(--muted);line-height:1.5}.sports-controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px 14px max(10px,env(safe-area-inset-bottom));border-top:1px solid #d8ded9;background:#f4f6f2}.sports-controls button{min-height:52px;border:1px solid #bfc9c2;border-radius:10px;background:#fff;color:var(--green);font-weight:800;cursor:pointer}.sports-controls button:last-child{background:var(--green);border-color:var(--green);color:#fff}.sports-controls button:disabled{opacity:.35;cursor:not-allowed}.sports-dialog::backdrop{background:#081612d9}@media(max-width:650px){.sports-dialog{width:100vw;height:100dvh;border-radius:0}.sports-header{padding-top:max(12px,env(safe-area-inset-top))}.sports-game-image{height:38dvh}.sports-game-body{padding-left:18px;padding-right:18px}}@media(min-width:651px){.sports-dialog{border-radius:18px}.sports-game-body h2{font-size:38px}}
+  </style>
+  <script src="app.js"></script>
+</body>
+</html>
