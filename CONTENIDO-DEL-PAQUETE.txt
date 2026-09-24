@@ -1,0 +1,24 @@
+REPOSITORIO DE JUEGOS DE EDUCACIÓN FÍSICA
+
+Versión preparada para Vercel: 24 de septiembre de 2026
+
+Incluye:
+- 144 juegos y ejercicios incorporados al repositorio.
+- 134 imágenes WebP. Algunos juegos relacionados comparten ilustración.
+- Repositorio con buscador, filtros y favoritos.
+- Creador y editor de ejercicios.
+- Creador de sesiones y exportación PDF.
+- Creador de Situaciones de Aprendizaje.
+- Modo polideportivo para móvil.
+- Guardado local y copias JSON.
+
+ARCHIVOS PRINCIPALES
+
+public/index.html       Página principal y estructura de la aplicación.
+public/app.js           Juegos, datos y funcionamiento de la aplicación.
+public/styles.css       Diseño general y adaptación a móvil.
+public/images/games/    Ilustraciones de los juegos.
+vercel.json             Configuración automática para Vercel.
+README.md               Guía completa de publicación y funcionamiento.
+
+No necesita instalar dependencias ni ejecutar una compilación.
