@@ -1,0 +1,8 @@
+{
+  "name": "repositorio-juegos-educacion-fisica",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "check": "node scripts/check-duplicates.mjs"
+  }
+}
