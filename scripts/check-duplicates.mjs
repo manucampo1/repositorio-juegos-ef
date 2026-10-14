@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 const root=path.resolve(import.meta.dirname,"..");
-const sources=["app.js","popular-games.js","sports-games.js","cooldown-games-2.js","jump-rope-games.js"];
+const sources=["dist/app.js","dist/popular-games.js","dist/sports-games.js","dist/cooldown-games-2.js","dist/jump-rope-games.js","dist/body-skills-games.js","dist/relay-games.js","dist/sensory-games.js","dist/tag-games.js"];
 const normalize=value=>value.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"");
 const titles=sources.flatMap(file=>{
   const contents=fs.readFileSync(path.join(root,file),"utf8");
