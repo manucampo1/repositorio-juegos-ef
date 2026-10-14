@@ -2,11 +2,13 @@ import fs from "node:fs";
 import path from "node:path";
 
 const root=path.resolve(import.meta.dirname,"..");
-const sources=["dist/app.js","dist/popular-games.js","dist/sports-games.js","dist/cooldown-games-2.js","dist/jump-rope-games.js","dist/body-skills-games.js","dist/relay-games.js","dist/sensory-games.js","dist/tag-games.js"];
+const sources=["dist/app.js","dist/popular-games.js","dist/sports-games.js","dist/cooldown-games-2.js","dist/jump-rope-games.js","dist/body-skills-games.js","dist/relay-games.js","dist/sensory-games.js","dist/tag-games.js","dist/additional-games.js"];
 const normalize=value=>value.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"");
 const titles=sources.flatMap(file=>{
   const contents=fs.readFileSync(path.join(root,file),"utf8");
-  return [...contents.matchAll(/title:\s*"([^"]+)"/g)].map(match=>({title:match[1],file}));
+  const explicit=[...contents.matchAll(/title:\s*"([^"]+)"/g)].map(match=>({title:match[1],file}));
+  const compact=[...contents.matchAll(/extraGame\(\d+,"[^"]+","([^"]+)"/g)].map(match=>({title:match[1],file}));
+  return [...explicit,...compact];
 });
 const seen=new Map();
 const duplicates=[];
